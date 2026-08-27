@@ -78,7 +78,7 @@ app.innerHTML = `
     <section class="truth">
       <p class="eyebrow">Prototype boundary</p>
       <h2>Built to prove the mechanism.</h2>
-      <p>This release uses Solana's Memo program on Devnet and issuer self-attestation calldata on supported EVM testnets. Production work will add issuer governance, revocation indexing, sponsored fees, recovery, accessibility testing, and audited chain-native registries.</p>
+      <p>This release uses Solana's Memo program on Devnet and issuer-signed calldata sent with zero value to a fixed attestation sink on supported EVM testnets. Production work will add issuer governance, revocation indexing, sponsored fees, recovery, accessibility testing, and audited chain-native registries.</p>
       <p class="rpc">RPC: ${DEVNET_RPC}</p>
     </section>
   </main>

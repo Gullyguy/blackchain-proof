@@ -4,6 +4,8 @@ import type { ChainDefinition } from "./chains.ts";
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
+export const EVM_ATTESTATION_SINK = "0x000000000000000000000000000000000000dEaD";
+
 export interface Eip1193Provider {
   request(args: { method: string; params?: unknown[] | object }): Promise<unknown>;
 }
@@ -125,7 +127,7 @@ export async function anchorEvmCredential(
   const issuer = await connectEvmWallet(provider);
   return (await provider.request({
     method: "eth_sendTransaction",
-    params: [{ from: issuer, to: issuer, value: "0x0", data: utf8ToHex(memo) }],
+    params: [{ from: issuer, to: EVM_ATTESTATION_SINK, value: "0x0", data: utf8ToHex(memo) }],
   })) as string;
 }
 
@@ -142,8 +144,8 @@ export async function verifyEvmCredential(
   })) as EvmTransaction | null;
   if (!transaction) throw new Error(`Transaction was not found on ${chain.name} ${chain.network}.`);
   if (!transaction.from) throw new Error("Credential issuer signature is missing.");
-  if (!transaction.to || transaction.to.toLowerCase() !== transaction.from.toLowerCase()) {
-    throw new Error("BlackChain Proof EVM credentials must be issuer self-attestations.");
+  if (!transaction.to || transaction.to.toLowerCase() !== EVM_ATTESTATION_SINK.toLowerCase()) {
+    throw new Error("BlackChain Proof EVM credentials must target the protocol attestation sink.");
   }
   const memo = hexToUtf8(transaction.input || transaction.data || "0x");
   return {

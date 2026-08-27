@@ -25,7 +25,7 @@ The Solana Devnet adapter writes the encoded `BCP1` payload through the Memo pro
 
 The EVM testnet adapter sends a zero-value transaction from the issuer to the same issuer with the encoded `BCP1` payload in calldata. Verification reads the transaction from the selected chain, requires `from` and `to` to match, decodes the payload, and reports the signing address and block number.
 
-This self-attestation pattern proves portable issuance and verification with no contract deployment. Grant-funded production work should replace it with a chain-native registry that supports:
+This attestation-sink pattern proves portable issuance and verification with no contract deployment. Grant-funded production work should replace it with a chain-native registry that supports:
 
 - issuer authorization
 - credential status and revocation

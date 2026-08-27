@@ -30,7 +30,7 @@ Community technology programs produce real work, but learners often leave with s
 2. Connects Phantom for Solana or an EIP-1193 wallet for supported EVM networks.
 3. Hashes the private evidence URL and learner-held secret inside the browser.
 4. Creates a versioned `BCP1` credential commitment.
-5. Anchors the commitment through Solana's Memo program or EVM issuer self-attestation calldata.
+5. Anchors the commitment through Solana's Memo program or issuer-signed EVM calldata sent with zero value to a fixed attestation sink.
 6. Verifies a transaction directly against the selected network.
 7. Displays the issuer signer, skill, credential ID, issuance time, and chain position.
 
@@ -39,12 +39,12 @@ Community technology programs produce real work, but learners often leave with s
 | Network | Wallet path | Current proof mechanism |
 |---|---|---|
 | Solana Devnet | Phantom | Memo program instruction |
-| Avalanche Fuji C-Chain | EIP-1193 | Issuer-signed self-transaction calldata |
-| Base Sepolia | EIP-1193 | Issuer-signed self-transaction calldata |
-| Arbitrum Sepolia | EIP-1193 | Issuer-signed self-transaction calldata |
-| BNB Testnet | EIP-1193 | Issuer-signed self-transaction calldata |
-| Mantle Sepolia | EIP-1193 | Issuer-signed self-transaction calldata |
-| Polygon Amoy | EIP-1193 | Issuer-signed self-transaction calldata |
+| Avalanche Fuji C-Chain | EIP-1193 | Issuer-signed calldata to the attestation sink |
+| Base Sepolia | EIP-1193 | Issuer-signed calldata to the attestation sink |
+| Arbitrum Sepolia | EIP-1193 | Issuer-signed calldata to the attestation sink |
+| BNB Testnet | EIP-1193 | Issuer-signed calldata to the attestation sink |
+| Mantle Sepolia | EIP-1193 | Issuer-signed calldata to the attestation sink |
+| Polygon Amoy | EIP-1193 | Issuer-signed calldata to the attestation sink |
 
 The EVM path proves the portable protocol and verifier before a grant-specific registry contract is built. It is not presented as an audited production credential registry.
 

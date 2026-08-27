@@ -48,6 +48,16 @@ Community technology programs produce real work, but learners often leave with s
 
 The EVM path proves the portable protocol and verifier before a grant-specific registry contract is built. It is not presented as an audited production credential registry.
 
+## Verified Avalanche Fuji evidence
+
+- **Transaction:** [`0x2f1071765514affbf478ecf69f88e105652b06e912a960203f6dce0f2a0c86fe`](https://testnet.snowtrace.io/tx/0x2f1071765514affbf478ecf69f88e105652b06e912a960203f6dce0f2a0c86fe)
+- **Block:** `58024280`
+- **Issuer:** `0x3e909fa113dc18943031741e391f9192d8e8fc03`
+- **Credential ID:** `e902da7ee953af6c5607c5ed8c249c8b77a606df4019d9e3462d925fef40e378`
+- **Verifier result:** Valid BlackChain Proof for `Avalanche C-Chain transaction fundamentals`
+
+This is a wallet-approved Fuji testnet transaction with zero AVAX value. The public verifier decoded the protocol payload and confirmed the issuer, attestation sink, credential ID, issuance time, and block position.
+
 ## Privacy boundary
 
 Do not enter names, emails, grades, employment information, government identifiers, or private student records in the public skill field. The evidence URL and learner secret are hashed locally and never included in the memo. A production design still requires a formal privacy review, issuer governance, revocation indexing, recovery, and security testing.

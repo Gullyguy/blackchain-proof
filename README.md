@@ -1,17 +1,17 @@
 # BlackChain Proof
 
-Open-source, privacy-first proof of demonstrated Solana skills.
+Open-source, privacy-first proof of demonstrated technical skills across public test networks.
 
 **Project lead:** Vincent Owens
 
-**Network:** Solana Devnet
+**Networks:** Solana Devnet, Avalanche Fuji, Base Sepolia, Arbitrum Sepolia, BNB Testnet, Mantle Sepolia, and Polygon Amoy
 
 **License:** MIT
 **Status:** Working prototype, not a production credential system
 
 ## Why this exists
 
-Community technology programs produce real work, but learners often leave with screenshots, PDFs, and attendance certificates that cannot be independently verified. BlackChain Proof anchors a privacy-preserving credential commitment to Solana Devnet and lets anyone verify the issuer signature and payload from a transaction signature.
+Community technology programs produce real work, but learners often leave with screenshots, PDFs, and attendance certificates that cannot be independently verified. BlackChain Proof anchors a privacy-preserving credential commitment to a public test network and lets anyone verify the issuer signature and payload from a transaction signature or hash.
 
 ## Solana Foundation criteria alignment
 
@@ -24,12 +24,27 @@ Community technology programs produce real work, but learners often leave with s
 
 ## What the prototype does
 
-1. Connects an injected Phantom wallet configured for Devnet.
-2. Hashes the private evidence URL and learner-held secret inside the browser.
-3. Creates a versioned `BCP1` credential commitment.
-4. Anchors the commitment through Solana's Memo program.
-5. Verifies a transaction signature directly against Solana Devnet.
-6. Displays the issuer signer, skill, credential ID, issuance time, and Devnet slot.
+1. Selects a supported public test network.
+2. Connects Phantom for Solana or an EIP-1193 wallet for supported EVM networks.
+3. Hashes the private evidence URL and learner-held secret inside the browser.
+4. Creates a versioned `BCP1` credential commitment.
+5. Anchors the commitment through Solana's Memo program or EVM issuer self-attestation calldata.
+6. Verifies a transaction directly against the selected network.
+7. Displays the issuer signer, skill, credential ID, issuance time, and chain position.
+
+## Supported test networks
+
+| Network | Wallet path | Current proof mechanism |
+|---|---|---|
+| Solana Devnet | Phantom | Memo program instruction |
+| Avalanche Fuji C-Chain | EIP-1193 | Issuer-signed self-transaction calldata |
+| Base Sepolia | EIP-1193 | Issuer-signed self-transaction calldata |
+| Arbitrum Sepolia | EIP-1193 | Issuer-signed self-transaction calldata |
+| BNB Testnet | EIP-1193 | Issuer-signed self-transaction calldata |
+| Mantle Sepolia | EIP-1193 | Issuer-signed self-transaction calldata |
+| Polygon Amoy | EIP-1193 | Issuer-signed self-transaction calldata |
+
+The EVM path proves the portable protocol and verifier before a grant-specific registry contract is built. It is not presented as an audited production credential registry.
 
 ## Privacy boundary
 
@@ -42,7 +57,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL, install or unlock Phantom, switch Phantom to Solana Devnet, and fund the issuer wallet with Devnet SOL from an official faucet.
+Open the local URL, select a network, install or unlock the matching wallet, and fund the issuer wallet with that network's official test token faucet. Every transaction requires the wallet holder's approval.
 
 ## Validate
 
@@ -72,7 +87,7 @@ The Memo instruction stores a compact payload prefixed with `BCP1:`:
 - Publish credential schema and issuer trust model.
 - Add indexed revocation and status checks.
 - Add fee-sponsored onboarding.
-- Evaluate Token-2022 non-transferable credentials or a dedicated audited program.
+- Evaluate Token-2022 non-transferable credentials, Soroban attestations, and dedicated audited EVM registries.
 - Add learner-controlled selective disclosure.
 - Complete accessibility, privacy, and security reviews.
 - Run controlled pilots with written institutional approval.
@@ -83,4 +98,8 @@ Vincent Owens is the project lead, accountable for product direction, community 
 
 ## No endorsement claim
 
-BlackChain Proof is an independent BlackChain Collective prototype. Solana Foundation funding, endorsement, and partnership are not confirmed.
+BlackChain Proof is an independent BlackChain Collective prototype. Funding, endorsement, and partnership from any listed blockchain foundation are not confirmed.
+
+## Chain-specific evidence policy
+
+A chain becomes grant-ready only after the public repository includes a network adapter, automated tests, a successful production build, and a wallet-approved testnet transaction visible in that network's explorer. A shared adapter alone does not prove traction, mainnet readiness, an audited registry, or ecosystem partnership.

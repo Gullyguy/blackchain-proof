@@ -94,6 +94,15 @@ const issueStatus = document.querySelector<HTMLDivElement>("#issue-status")!;
 const verifyForm = document.querySelector<HTMLFormElement>("#verify-form")!;
 const verifyStatus = document.querySelector<HTMLDivElement>("#verify-status")!;
 
+function readableError(error: unknown, fallback: string): string {
+  if (error instanceof Error && error.message) return error.message;
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string" && message.trim()) return message;
+  }
+  return fallback;
+}
+
 function selectedChain() {
   return getChain(chainSelect.value);
 }
@@ -120,7 +129,7 @@ connectButton.addEventListener("click", async () => {
     walletStatus.textContent = `Connected issuer: ${issuer}`;
     connectButton.textContent = "Wallet connected";
   } catch (error) {
-    walletStatus.textContent = error instanceof Error ? error.message : "Wallet connection failed.";
+    walletStatus.textContent = readableError(error, "Wallet connection failed.");
   }
 });
 
@@ -147,7 +156,7 @@ issueForm.addEventListener("submit", async (event) => {
     signatureField.value = signature;
   } catch (error) {
     issueStatus.className = "form-status error";
-    issueStatus.textContent = error instanceof Error ? error.message : "Credential issuance failed.";
+    issueStatus.textContent = readableError(error, "Credential issuance failed.");
   }
 });
 

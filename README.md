@@ -9,6 +9,8 @@ Open-source, privacy-first proof of demonstrated technical skills across public 
 **License:** MIT
 **Status:** Working prototype, not a production credential system
 
+**Public prototype:** https://gullyguy.github.io/blackchain-proof/
+
 ## Why this exists
 
 Community technology programs produce real work, but learners often leave with screenshots, PDFs, and attendance certificates that cannot be independently verified. BlackChain Proof anchors a privacy-preserving credential commitment to a public test network and lets anyone verify the issuer signature and payload from a transaction signature or hash.

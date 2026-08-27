@@ -8,10 +8,31 @@ export interface Eip1193Provider {
   request(args: { method: string; params?: unknown[] | object }): Promise<unknown>;
 }
 
+interface Eip6963ProviderInfo {
+  uuid: string;
+  name: string;
+  icon: string;
+  rdns: string;
+}
+
+interface Eip6963ProviderDetail {
+  info: Eip6963ProviderInfo;
+  provider: Eip1193Provider;
+}
+
 declare global {
   interface Window {
     ethereum?: Eip1193Provider;
   }
+}
+
+const announcedProviders = new Map<string, Eip6963ProviderDetail>();
+
+if (typeof window !== "undefined") {
+  window.addEventListener("eip6963:announceProvider", ((event: CustomEvent<Eip6963ProviderDetail>) => {
+    announcedProviders.set(event.detail.info.uuid, event.detail);
+  }) as EventListener);
+  window.dispatchEvent(new Event("eip6963:requestProvider"));
 }
 
 interface EvmTransaction {
@@ -42,6 +63,21 @@ export function getEvmWallet(): Eip1193Provider {
     throw new Error("An EIP-1193 wallet such as MetaMask is required.");
   }
   return window.ethereum;
+}
+
+export async function discoverEvmWallet(): Promise<Eip1193Provider> {
+  if (typeof window === "undefined") {
+    throw new Error("Wallet discovery requires a browser.");
+  }
+  window.dispatchEvent(new Event("eip6963:requestProvider"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const providers = [...announcedProviders.values()];
+  const metamask = providers.find((entry) =>
+    /metamask/i.test(`${entry.info.name} ${entry.info.rdns}`),
+  );
+  if (metamask) return metamask.provider;
+  if (providers[0]) return providers[0].provider;
+  return getEvmWallet();
 }
 
 export async function switchEvmChain(
@@ -82,8 +118,9 @@ export async function connectEvmWallet(
 export async function anchorEvmCredential(
   memo: string,
   chain: ChainDefinition,
-  provider = getEvmWallet(),
+  provider?: Eip1193Provider,
 ): Promise<string> {
+  provider ??= await discoverEvmWallet();
   await switchEvmChain(provider, chain);
   const issuer = await connectEvmWallet(provider);
   return (await provider.request({
@@ -95,8 +132,9 @@ export async function anchorEvmCredential(
 export async function verifyEvmCredential(
   transactionHash: string,
   chain: ChainDefinition,
-  provider = getEvmWallet(),
+  provider?: Eip1193Provider,
 ): Promise<{ payload: CredentialPayload; issuer: string; blockNumber: number }> {
+  provider ??= await discoverEvmWallet();
   await switchEvmChain(provider, chain);
   const transaction = (await provider.request({
     method: "eth_getTransactionByHash",
@@ -114,4 +152,3 @@ export async function verifyEvmCredential(
     blockNumber: Number.parseInt(transaction.blockNumber || "0x0", 16),
   };
 }
-

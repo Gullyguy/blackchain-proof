@@ -13,7 +13,7 @@ import { CHAINS, getChain } from "./chains.ts";
 import {
   anchorEvmCredential,
   connectEvmWallet,
-  getEvmWallet,
+  discoverEvmWallet,
   switchEvmChain,
   verifyEvmCredential,
 } from "./evm.ts";
@@ -113,7 +113,7 @@ connectButton.addEventListener("click", async () => {
     if (chain.family === "solana") {
       issuer = (await getWallet().connect()).publicKey.toBase58();
     } else {
-      const provider = getEvmWallet();
+      const provider = await discoverEvmWallet();
       await switchEvmChain(provider, chain);
       issuer = await connectEvmWallet(provider);
     }

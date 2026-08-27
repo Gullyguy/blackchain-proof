@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { hexToUtf8, utf8ToHex } from "../src/evm.ts";
+import { discoverEvmWallet, hexToUtf8, utf8ToHex } from "../src/evm.ts";
 
 test("round trips a UTF-8 BlackChain Proof memo through EVM calldata", () => {
   const memo = 'BCP1:{"v":1,"action":"issue","skill":"Avalanche fundamentals"}';
@@ -12,3 +12,6 @@ test("rejects malformed transaction data", () => {
   assert.throws(() => hexToUtf8("0xzz"), /valid hexadecimal/);
 });
 
+test("wallet discovery fails closed outside a browser", async () => {
+  await assert.rejects(discoverEvmWallet(), /requires a browser/);
+});
